@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "Start building client"
+rm ./o/CLIENT_DBG
+g++ src/main.cc src/Client.cc ../server/src/Server.cc ../general_includes/tokens.cc -I header/ -I ../server/header -I ../general_includes/ -o o/CLIENT_DBG
+
+if [ -a ./o/CLIENT_DBG ];then
+    echo "Successfully built client"
+else 
+    echo "Could not create client"
+fi

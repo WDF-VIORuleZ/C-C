@@ -1,0 +1,10 @@
+#!/bin/bash
+echo "Start building server"
+rm ./o/SERVER_DBG
+g++ src/main.cc src/Server.cc ../client/src/Client.cc ../general_includes/tokens.cc -I header/ -I ../client/header/ -I ../general_includes/ -o o/SERVER_DBG -g
+
+if [ -a ./o/SERVER_DBG ];then
+    echo "Successfully built server"
+else
+    echo "Error compiling Server"
+fi
