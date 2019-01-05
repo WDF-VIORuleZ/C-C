@@ -312,3 +312,8 @@ bool Server::display_error(const string &s, const int &e)
     cout << LOG::ERR << "Invalid Syntax [" << e << "] (" << s << ")" << endl;
     return false;
 }
+
+const void Server::log(const string &s)
+{
+    std::ofstream ofs(_log_path);
+}
