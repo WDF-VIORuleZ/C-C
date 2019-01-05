@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Start building server"
 rm ./o/SERVER_DBG
-g++ src/main.cc src/Server.cc ../client/src/Client.cc ../general_includes/tokens.cc -I header/ -I ../client/header/ -I ../general_includes/ -o o/SERVER_DBG -g
+g++ src/main.cc src/Server.cc ../client/src/Client.cc ../general_includes/tokens.cc ../file_handler/src/File_Handler.cc  -I header/ -I ../client/header/ -I ../general_includes/ -I ../file_handler/header/ -o o/SERVER_DBG -g
 
 if [ -a ./o/SERVER_DBG ];then
     echo "Successfully built server"

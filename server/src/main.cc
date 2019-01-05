@@ -10,10 +10,17 @@ int main(int argc, char *argv[])
         s =  new Server(std::stoi(string(argv[1])));
         cout << LOG::LOG << "CUSTOM PORT" << endl;
     }
+    else if (argc == 3)
+    {
+        s = new Server(std::stoi(string(argv[1])), string(argv[2]));
+        cout << LOG::LOG << "CUSTOM PORT\n"
+             << LOG::LOG << "CUSTOM FS_ROOT" << endl;
+    }
     else
     {
         s = new Server(31337);
-        cout << LOG::LOG << "STD_PORT [31337]" << endl;
+        cout << LOG::LOG << "STD_PORT [31337]"
+             << LOG::LOG << "FS_ROOT  [" << fs::current_path().string() << "]" << endl;
     }
     sleep(2);
 

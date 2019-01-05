@@ -3,13 +3,26 @@
 
 File_Handler::File_Handler(const fs::path &log_path)
 {
-
-    std::ofstream ofs(log_path.string());
-
-    if (fs::exists(log_path) && ofs.is_open() && ofs.good() && !ofs.bad())
+    if (fs::exists(log_path))
     {
         cout << "Set Gloabl LogPath to " << _log_path << endl;
         _log_path = log_path;
+    }
+    else
+    {
+        cout << "Directory does not exist. Do you want to vreate it? [y,n]" << endl;
+        char response;
+        std::cin >> response;
+
+        if(!std::cin.fail() && (response == 'y' || response == 'Y'))
+        {
+            mkfs(log_path);
+        }
+        else
+        {
+            cerr << "okay. Mission abort" << endl;
+            exit(-1);
+        }
     }
 }
 

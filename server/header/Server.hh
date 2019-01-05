@@ -3,6 +3,7 @@
 
 #include "../../client/header/Client.hh"
 #include "../../general_includes/tokens.h"
+#include "../../file_handler/header/File_Handler.hh"
 
 #include <unistd.h>
 #include <sys/types.h> 
@@ -19,8 +20,6 @@
 #include <iostream>
 #include <cctype>           // std::toupper
 #include <thread>
-#include <chrono>           // std::chrono::duration
-#include <fstream>
 
 using std::cerr;
 using std::cout;
@@ -36,6 +35,7 @@ class Server
     public:
         //CD - DS
         Server(int p_port);
+        Server(int p_port, const string &p_log_root);
         ~Server();
 
         int  send_message(int sock_fd, const string& message);
@@ -48,8 +48,6 @@ class Server
         bool process_command(string command);
         bool display_error(const string &s, const int &e);
 
-        const void log(const string &);
-
         // Main server Loop
         void run();
 
@@ -59,7 +57,9 @@ class Server
         struct sockaddr_in _server_address;
 
         std::vector<Client> _clients;
-        fd_set readfds;
+
+        // TODO: std::unique_ptr
+        File_Handler *fh;
 
         // Client-regarding Methods
         void add_client(int client_sock_fd);

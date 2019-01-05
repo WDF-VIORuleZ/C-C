@@ -11,6 +11,38 @@ Server::Server(int p_port)
     _server_address.sin_addr.s_addr = htonl(INADDR_ANY);
     _server_address.sin_port        = htons(_port_number);
     int reuseaddr                   = 1;
+    fh                              = new File_Handler(fs::current_path());
+
+    if (setsockopt(_socket_fd,SOL_SOCKET,SO_REUSEADDR,&reuseaddr,sizeof(reuseaddr)) == -1) 
+    {
+        cerr << LOG::ERR << "Error Seeting SpockOPT" << endl;
+    }
+    else
+    {
+        cout << LOG::OK << "Set Sockopt: reuseaddr" << endl;
+    }
+
+    // Conversion helper
+    struct sockaddr_in server_adress = _server_address;
+    if (bind(_socket_fd, (struct sockaddr*)&server_adress, sizeof(_server_address)) < 0)
+    {
+        cerr << LOG::ERR << "Error binding Server to port: " << _port_number << " @ ADRR: " << _server_address.sin_addr.s_addr << endl;
+    }    
+    else
+    {
+        cout << LOG::OK << "Successfully Created Server on port " << _port_number << " @ ADRR " << _server_address.sin_addr.s_addr << endl; 
+    }   
+}
+
+Server::Server(int p_port, const string &p_log_root)
+{
+    _socket_fd = socket(AF_INET, SOCK_STREAM, 0);
+    _port_number = p_port;
+
+    _server_address.sin_family      = AF_INET;
+    _server_address.sin_addr.s_addr = htonl(INADDR_ANY);
+    _server_address.sin_port        = htons(_port_number);
+    int reuseaddr                   = 1;
 
     if (setsockopt(_socket_fd,SOL_SOCKET,SO_REUSEADDR,&reuseaddr,sizeof(reuseaddr)) == -1) 
     {
@@ -313,7 +345,3 @@ bool Server::display_error(const string &s, const int &e)
     return false;
 }
 
-const void Server::log(const string &s)
-{
-    std::ofstream ofs(_log_path);
-}
