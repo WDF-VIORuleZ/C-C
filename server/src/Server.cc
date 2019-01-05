@@ -1,5 +1,5 @@
 #include "../header/Server.hh"
-#include "../../general_includes/tokens.h"
+#include "../../general_includes/tokens.hh"
 //#include "../header/LOGGING.h"
 
 Server::Server(int p_port)
@@ -119,28 +119,36 @@ void Server::run()
         
         //int error = listen(_socket_fd, 10);
        
-       // TODOD: Listen Thread
-        if (!listen(_socket_fd, MAX_CLIENTS))
+       /*
+            Checking for remaining open ports
+       */
+        for(size_t i = 0; i < MAX_CLIENTS - _clients.size(); i++)
         {
-            cout << LOG::LOG << "Listeing for Clients..." << endl;
-
-            struct sockaddr_in client_address;
-            socklen_t          client_length;
-
-            int new_socket_fd = accept(_socket_fd, (struct sockaddr*)&client_address, &client_length);
-
-            if (new_socket_fd > 0)
+            if (!listen(_socket_fd, MAX_CLIENTS))
             {
-                add_client(new_socket_fd);
-                cout << "Added new Client: " << new_socket_fd << endl;
+                cout << LOG::LOG << "Listeing for Clients..." << endl;
+
+                struct sockaddr_in client_address;
+                socklen_t          client_length;
+
+                int new_socket_fd = accept(_socket_fd, (struct sockaddr*)&client_address, &client_length);
+
+                if (new_socket_fd > 0)
+                {
+                    add_client(new_socket_fd);
+                    cout << "Added new Client: " << new_socket_fd << endl;
+                }
+                else
+                {
+                    cerr << "Error Creating socket_fd. Mission Abort" << endl;
+                    exit(-1);
+                }
             }
             else
             {
-                cerr << "Error Creating socket_fd. Mission Abort" << endl;
-                exit(-1);
+                cout << LOG::ERR << "Error Listeing" << endl;
             }
         }
-
         // Reading clients messages to buffer
     }
 }

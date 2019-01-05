@@ -1,13 +1,11 @@
-CC     = g++
+output: main.o Client.o
+	g++ main.o Client.o -o ./o/CLIENT_DBG
 
-TARGET = CLIENT_DBG
+main.o:
+	g++ -c ./src/main.cc
 
-SRC    = src/main.cc \ src/Client.cc \ ../server/src/Server.cc
-
-FLAGS   = -Wall -std=c++17
-
-all:
-	$(CC) -o $(TARGET) $(SRC)
+Client.o: ./src/Client.cc ./header/Client.hh
+	g++ -c ./src/Client.cc
 
 clean:
-	rm $(TARGET)
+	rm *.o 
