@@ -2,7 +2,7 @@
 #define __SERVER__
 
 #include "../../client/header/Client.hh"
-#include "../../general_includes/tokens.h"
+#include "../../general_includes/tokens.hh"
 
 #include <unistd.h>
 #include <sys/types.h> 
